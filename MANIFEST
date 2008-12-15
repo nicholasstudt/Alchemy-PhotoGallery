@@ -1,0 +1,14 @@
+Changes
+MANIFEST
+Makefile.PL
+README
+docs/apache/alchemy-pg_httpd.conf
+docs/apache/alchemy-pg_perl.conf
+docs/templates/default.tp
+docs/templates/admin.css
+docs/templates/viewer.css
+lib/Alchemy/PhotoGallery.pm
+lib/Alchemy/PhotoGallery/Admin.pm  
+lib/Alchemy/PhotoGallery/Viewer.pm
+t/Alchemy-PhotoGallery.t
+META.yml                                 Module meta-data (added by MakeMaker)

@@ -1,0 +1,61 @@
+/*
+ * Admin CSS elements used by Alchemy::PhotoGallery
+ */
+
+/* Everything is in a box - the container.. */
+.box {
+	border: 1px solid black;
+	padding: 0px 1px 0px 0px;
+	margin: 10px 0px 0px 0px;
+}
+
+/* Header - Usually, left-aligned */
+.hdr {
+	background: #bfbfbf;
+}
+
+/* Centered Header */
+.chdr {
+	text-align: center;
+	background: #bfbfbf;
+}
+
+/* Right-aligned Header */
+.rhdr {
+	text-align: right;
+	background: #bfbfbf;
+}
+
+/* Sub-Header - Usually, left-aligned */
+.shd {
+	background: #dee;
+}
+
+/* Right-aligned Sub-Header */
+.rshd {
+	text-align: right;
+	background: #dee;
+}
+
+/* Errors */
+.error {
+	color: red;
+}
+
+/* Data - Usually, left-aligned */
+.dta {
+	background: #fff;
+}
+
+/* Centered Data */
+.cdta {
+	text-align: center;
+	background: #fff;
+}
+
+/* Right-aligned Data */
+.rdta {
+	text-align: right;
+	background: #fff;
+}
+

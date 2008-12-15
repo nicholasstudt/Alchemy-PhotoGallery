@@ -1,0 +1,199 @@
+PhotoGallery version 0.04
+==========================
+
+The README is used to introduce the module and provide instructions on
+how to install the module, any machine dependencies it may have (for
+example C compilers and installed libraries) and any other information
+that should be provided before the module is installed.
+
+A README file is required for CPAN modules since CPAN extracts the
+README file from a module distribution so that people browsing the
+archive can use it get an idea of the modules uses. It is usually a
+good idea to provide version information here so that people can
+decide whether fixes for the module are worth downloading.
+
+This application will display an image gallery or galleries arranged by
+directory. It will use available thumbnails or create them if they do not
+exist. See the perldoc for Alchemy::PhotoGallery for more information.
+
+Be sure to use KrKit::Xpander for framing the application, without CSS, the
+pages will look ... rather interesting...
+
+INSTALLATION
+
+To install this module type the following:
+
+   perl Makefile.PL
+   make
+   make test
+   make install
+
+APACHE
+
+<Perl>
+	#!/usr/bin/perl
+
+	## Dependencies 
+	use Apache2::Request
+	use File::Find::Rule
+	use Image::Magick
+	use Image::Magick
+	use KrKit::Control
+	use KrKit::Handler
+	use KrKit::HTML qw( :all )
+	use KrKit::Validate
+	use POSIX;
+
+	## PhotoGallery 
+	use Alchemy::PhotoGallery;
+	use Alchemy::PhotoGallery::Admin;
+	use Alchemy::PhotoGallery::Viewer;
+</Perl>
+
+<Location />
+	## PerlSetVars - Admin Specific
+	PerlSetVar	PhotoGallery_SmThSize		"100"
+	PerlSetVar	PhotoGallery_MidSize		"25"
+	PerlSetVar	PhotoGallery_ThQual			"500"
+	PerlSetVar	PhotoGallery_MidQual		"20"
+	PerlSetVar	PhotoGallery_ThumbSize		"70"
+	PerlSetVar	PhotoGallery_Advanced		"1"
+	PerlSetVar  PhotoGallery_Copyright      "1"
+	PerlSetVar	PhotoGallery_FontDir		"/usr/share/fonts"
+	PerlSetVar	PhotoGallery_ExifTestImg	"/www/html/fido.jpg"
+	
+	PerlSetVar	PhotoGallery_useFM			"1"
+	PerlSetVar	PhotoGallery_chmod			"/bin/chmod"
+	PerlSetVar	PhotoGallery_chgrp			"/bin/chgrp"
+	PerlSetVar	PhotoGallery_FilePerm		"0644"
+	PerlSetVar	PhotoGallery_DirPerm		"2775"
+	PerlSetVar	PhotoGallery_Group			"web"
+	
+	## PerlSetVars - Viewer Specific
+	PerlSetVar	PhotoGallery_PrevTag		"<--"
+	PerlSetVar	PhotoGallery_NextTag		"-->"
+	PerlSetVar	PhotoGallery_ExifSize		"350x350"
+
+	## PerlSetVar - Generala
+	PerlSetVar	PhotoGallery_Location		"/gallery"
+	PerlSetVar	PhotoGallery_Root			"/images/gallery"
+	PerlSetVar	PhotoGallery_ImageExt		"jpg jpeg"
+	PerlSetVar	PhotoGallery_Title			"Gallery Index"
+	PerlSetVar	PhotoGallery_Dir			"/var/www/html/photo"
+	PerlSetVar	PhotoGallery_ThDir			"thumb"
+	PerlSetVar	PhotoGallery_SmThDir		"sm_thumb"
+	PerlSetVar	PhotoGallery_MidSizeDir		"mid_thumb"
+	PerlSetVar	PhotoGallery_ThExt			"_th"
+	PerlSetVar	PhotoGallery_SmThExt		"_sm"
+	PerlSetVar	PhotoGallery_MidThExt		"_mid"
+	PerlSetVar	PhotoGallery_UseMidPic		"0"
+	PerlSetVar	PhotoGallery_FullPopup		"1"
+	PerlSetVar	PhotoGallery_GalNumRow		"4"
+	PerlSetVar	PhotoGallery_GalNumPage		"20"
+	PerlSetVar	PhotoGallery_CaptionFile	"caption.txt"
+	PerlSetVar	PhotoGallery_ExifFile		"exif_info"
+	PerlSetVar	PhotoGallery_RTProcess		"0"
+</Location>
+
+<Location /photo >
+	SetHandler		modperl
+
+	PerlSetVar		SiteTitle		"PhotoGallery - "
+		
+	PerlHandler	 Alchemy::PhotoGallery::Viewer
+</Location>
+
+<Location /admin/photo >
+	SetHandler		modperl
+
+	PerlSetVar		SiteTitle		"PhotoGallery Admin"
+		
+	PerlHandler	 Alchemy::PhotoGallery::Admin
+</Location>
+
+DEPENDENCIES
+
+This module requires these other modules and libraries:
+
+	mod_perl 2.x
+
+	## Admin
+	Apache2::Request
+	File::Find::Rule
+	Image::Magick
+	Image::ExifTool
+	KrKit::Control
+	KrKit::Handler
+	KrKit::HTML
+	KrKit::Validate
+
+	## Viewer
+	POSIX
+	File::Find::Rule
+	Image::ExifTool
+	Image::Magick
+	KrKit::Control
+	KrKit::Handler
+	KrKit::HTML
+	KrKit::Validate
+
+BEHAVIOR
+
+Note: Directory analogous with Gallery
+
+No Caption Files - No RTProcessing
+----------------------------------
+1. Top-level directory with images, at least one sub-directory, no thumb dirs 
+   in top-level or sub-directory(s)
+	a. No images from top-level directory displayed
+	b. 'No Images' link to sub-directory, Directory name for caption
+
+2. Top-level directory with images, at least one sub-directory, sub-directory
+   has thumb dirs - top-level does not
+	a. No images from top-level directory displayed
+	b. First image (alphabetical sort) in sub-directory(s) is displayed as a 
+	   link to main/sub-directory
+
+3. Top-level directory with images, at least one sub-directory, thumb dirs in
+   both the top-level and sub-directory(s)
+	a. Sub-directory(s) listed first (alphabetical sort), displaying the first
+	   image (alphabetical sort) in sub-directory(s) is displayed as a link to
+	   main/sub-directory
+	b. Images in top-level directory are displayed as a link to showphoto/image
+
+No Caption Files - RTProcessing
+-------------------------------
+1. Same as number 3 under No Caption Files - No RTProcessing
+
+With Caption Files - No RTProcessing
+------------------------------------
+1. Caption file in every directory
+	a. A directory containing a caption file (regardless of level) will 
+	   override any logic in the display of a gallery. A caption file can 
+	   cause a directory to display any image from the top-level down (PIC).
+
+2. No caption file in the current directory, caption file in the 
+   sub-directory(s)
+	a. The current directory will follow number 3 under No Caption Files - No
+	   RTProcessing, but when displaying the sub-directory(s), it will follow
+	   the definition of the caption file
+	b. If the sub-directory caption file indicates a GALTHUMB, the galthumb
+	   will be presented as a link to the sub-directory using the defined
+	   caption for the GALTHUMB
+	c. If the sub-directory caption file does not indicate a GALTHUMB, the 
+	   first image (PIC) listed in the caption file will be provided as a 
+	   link to the sub-directory using the defined caption for the image
+	d. If no c. is selected, it's caption will not be used, instead, the 
+	   respective sub-directory's title will be used
+
+LAST UPDATED
+	Date: 2006/05/15 11:32:53
+	
+COPYRIGHT AND LICENCE
+
+  Copyright (C) 2006 by Ron Andrews, Nicholas Studt, and Paul Espinose. 
+  All Rights Reserved.
+  
+  You may distribute under the terms of either the GNU General Public
+  License or the Artistic License, as specified in the Perl README file.
+

@@ -1,0 +1,186 @@
+Revision history for Perl extension Alchemy::PhotoGallery.
+
+ToDo:
+- Remove useless thumbnails during processing
+- Allow easy ordering of images in caption file add/edit
+- Enable do_copyright to use uploaded images
+- Fix RowCaption numbering post 2 pages
+- Provide error message for non-rgb images in processing
+- Add Caption is not 'working' correctly for add images.... only 2
+- Test paging with exactly the amount of images for one page and one over
+
+PerlSetVars:
+	## PerlSetVars - Admin Specific
+	PerlSetVar	PhotoGallery_ThumbSize		"100"
+	PerlSetVar	PhotoGallery_MidSize		"500"
+	PerlSetVar	PhotoGallery_SmThSize		"25"
+	PerlSetVar	PhotoGallery_ThQual			"20"
+	PerlSetVar	PhotoGallery_MidQual		"70"
+	PerlSetVar	PhotoGallery_Advanced		"0"
+*	PerlSetVar	PhotoGallery_ExifTestImg	"/var/www/html/fido.jpg"
+
+	PerlSetVar	PhotoGallery_useFM			"1"
+	PerlSetVar	PhotoGallery_FilePerm		"0644"
+	PerlSetVar	PhotoGallery_DirPerm		"2775"
+*	PerlSetVar	PhotoGallery_Group			"web"
+	PerlSetVar	PhotoGallery_chmod			"/bin/chmod"
+	PerlSetVar	PhotoGallery_chgrp			"/bin/chgrp"
+
+	## PerlSetVars - Viewer Specific
+	PerlSetVar	PhotoGallery_PrevTag		"<--"
+	PerlSetVar	PhotoGallery_NextTag		"-->"
+	PerlSetVar	PhotoGallery_ExifSize		"350x350"
+    PerlSetVar	PhotoGallery_RowCapTop		"1"
+    PerlSetVar	PhotoGallery_AllPics		"0"
+	PerlSetVar	PhotoGallery_ExifBlankLn	"&nbsp;"
+
+
+	## PerlSetVar - General
+*	PerlSetVar	PhotoGallery_Location		"/gallery"
+*	PerlSetVar	PhotoGallery_Root			"/photo"
+*	PerlSetVar	PhotoGallery_ImageExt		"jpg jpeg"
+	PerlSetVar	PhotoGallery_Title			"Gallery Index"
+*	PerlSetVar	PhotoGallery_Dir			"/var/www/html/photo"
+	PerlSetVar	PhotoGallery_ThDir			"thumb"
+	PerlSetVar	PhotoGallery_SmThDir		"sm_thumb"
+	PerlSetVar	PhotoGallery_MidSizeDir		"mid_thumb"
+	PerlSetVar	PhotoGallery_ThExt			"_th"
+	PerlSetVar	PhotoGallery_SmThExt		"_sm"
+	PerlSetVar	PhotoGallery_MidThExt		"_mid"
+	PerlSetVar	PhotoGallery_UseMidPic		"0"
+	PerlSetVar	PhotoGallery_FullPopup		"1"
+	PerlSetVar	PhotoGallery_GalNumRow		"4"
+	PerlSetVar	PhotoGallery_GalNumPage		"20"
+	PerlSetVar	PhotoGallery_CaptionFile	"caption.txt"
+	PerlSetVar	PhotoGallery_ExifFile		"exif_info"
+	PerlSetVar	PhotoGallery_ExifFrame		""
+	PerlSetVar	PhotoGallery_FullFrame		""
+	PerlSetVar	PhotoGallery_RTProcess		"0"
+    PerlSetVar  PhotoGallery_NoCap          "1"
+    PerlSetVar  PhotoGallery_GalTag         "Gallery"
+
+* - Indicates required PerlSetVars (no defaults)
+Note: DirRoot is only required if Alchemy::FileManager is used and will thus
+      already exist...
+	  
+ChangeLog:
+
+0.17 Sun Oct  5 00:25:13 CDT 2008
+	- Bug fix - thumbnails for images not included in caption file showing
+	  up before rest of the images. -Paul
+	- Bug fix - showing multiple galleries for a gallery that only has one
+	  image in it. -Paul
+	- Bug fix - fixed default value for PhotoGallery_GalTag. -Paul
+	- Feature - integrated exif info for Title and Description into gallery
+	  view and showphoto view. -Paul
+	- Feature - added ability to include blank lines in the exif_info file.
+	  PerlSetVar PhotoGallery_ExifBlankLn controls what is put in as a 
+	  place holder, i.e. "&nbsp;", "<hr>" etc. -x Paul
+
+0.16 Fri Apr 18 15:26:59 CDT 2008
+	- Feature - added direct page navigation at the top for galleries that have
+	  more than one page. -Paul
+
+
+0.16 Fri Apr 18 00:45:37 CDT 2008
+	- Feature - ability to turn off captions not explicity set in the
+	  caption file.  Uses SetVar PhotoGallery_NoCap. -Paul
+	- Feature - ability to show all pics in gallery if a caption file is
+	  used and not all images are specified in caption file.  Useful to
+	  set NUMROW, NUMPAGE etc. but not having to specify the files.  Uses
+	  SetVar PhotoGallery_AllPics. -Paul
+	- Feature - added SetVar PhotoGallery_GalTag to specify tag to append to
+	  gallery captions. -Paul
+
+0.15 Tue Oct 30 08:23:41 CDT 2007
+	- Bug fix. -Paul
+
+0.14 Mon Oct 29 15:24:40 CDT 2007
+	- Bug fix.  Multiple pages not showing up for root gallery. -Paul
+
+0.13 Mon Jan 22 13:16:17 CST 2007
+	- Bug fix for unitialized values in Photogallery.pm
+
+0.12 Tue Sep 12 21:03:28 CDT 2006
+	- Bug fix for FileManager URL in Admin.pm
+
+0.11 Tue Sep  5 16:40:52 CDT 2006
+	- Fixed bug with URI location and filesystem location having to be the
+	  the same.
+	- Added further functionality, ability to have full image either in a
+	  popup or in the same window.
+	- Fixed some CSS issues.
+	- Fixed the order of x and y values for EXIF window dimensioning.
+	- Fixed the number of columns (Pictures per Row).  Defined vs. calc.
+	- Fixed the way rootp was being defined.  Let the handler define it as
+	  with other apps.  roota deprecated in favor of rootp now.
+	- Made the way the tool tips appear when hovering over an image more
+	  intelligent.
+	
+0.10 Wed May 31 20:38 2006
+	- Updated DirRoot PerlSetVar to reflect FM_DirRoot
+
+0.09 Mon May 29 00:21 2006
+	- Added do_copyright functionality to Admin.pm
+	- Added FontDir PerlSetVar to support do_copyright
+	- Added Copyright PerlSetVar for toggling copyright capability
+	
+0.08 Sat May 27 23:00 2006
+	- Reverted back to explicitly defining the popup windows (would prefer
+	  to be able to go back to using ht_popup)
+	- Added capability to specify whether a row caption goes above or below
+	  the related row of images [1..n]
+
+0.07 Sat May 27 13:35 2006
+	- Updated entire application to reflect updates to Enigma::Gallery 0.98
+	- Removed Title functionality
+	- Add capability for caption files to be used everywhere
+	- Removed Gallery_URL - replaced with just using rootp
+	- Add initial concept of copyright data to be added to images
+	- Increased support to handle complex heirarchy - graceful representations
+	- Add RTProcess for on-the-fly processing for the viewer (optional)
+	- Updated perldocs
+	- Updated template
+
+0.06 Tue May 16 10:52 2006
+	- Swapped FullSize link with Caption in do_showphoto
+	- Added defaults for caption and title in do_add (Captions)
+	- Added defaults for title in do_addtitle (Titles)
+	- Added do_testexif to Admin with address book-like functionality
+	- Moved all window.opens to ht_popup
+	- Added PerlSetVars: PhotoGallery_ExifFrame and PhotoGallery_FullFrame
+	- Added framing support to do_exif, do_full, and do_exiftest
+	- Cleaned up process image - made to handle only one directory
+	- Added ability to indicate not to show gallery pics (SHOWPICS)
+	
+0.05 Mon May 15 20:08 2006
+	- Fixed display of thumbnail directories in Title add/edit
+	- Changed AdvCaption to Advanced throughout
+	- Changed do_advanced to do_advcap
+	- Added Advanced title
+	- Added capability to handle floating point in Caption interfaces
+	- Added capability to handle floating point in Title interfaces
+	- Fixed 'Remove Thumbs' linkage in do_main
+	- Added FileManager link to each main directory (not just subdirs)
+
+0.04 Mon May 15 09:14 2006
+	- A little debug, here and there...
+	- Implemented Row Captions
+	- Cleaned up perldoc
+	- Added do_tree, facilitates a comprehensive view of the gallery
+	- Add do_clean function to remove all thumbnail directories from a gallery
+	
+0.03 Sun May 14 11:18 2006
+	- Added thumbnail suffix determined by the config file
+	- Added advanced editing of caption file in Admin
+	- Removed MaxDepth element, keep to one depth in recursion
+	- Added do_list functionality, only for top-level at the moment
+	- Added MidSize feature and full function
+
+0.02 Sat May 13 20:18 2006
+	- "Finished" porting of application from Paul's Enigma::Gallery application
+
+0.01 Sat May 06 21:27 2006
+	- original version; created by h2xs 1.23 with options
+		-X -A -n FileManager
+
