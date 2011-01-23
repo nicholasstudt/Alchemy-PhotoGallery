@@ -82,7 +82,7 @@ sub do_exif {
 		ht_table(),
 		
 		ht_tr(),
-		ht_td( { 'class' => 'hdr', 'colspan' => '2' },
+		ht_td( { 'class' => 'close', 'colspan' => '2' },
 			ht_a( 'javascript://', 'Close Window', 
 				'onClick="window.close()"' ) ),
 		ht_utr(),

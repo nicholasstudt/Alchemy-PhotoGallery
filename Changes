@@ -65,6 +65,10 @@ Note: DirRoot is only required if Alchemy::FileManager is used and will thus
 	  
 ChangeLog:
 
+0.18 Sat Sep 11 22:42:03 CDT 2010
+	- Changed 'Close Window' TD class from 'hdr' to 'close' in do_exif sub 
+	  in Viewer.pm. -Paul
+
 0.17 Sun Oct  5 00:25:13 CDT 2008
 	- Bug fix - thumbnails for images not included in caption file showing
 	  up before rest of the images. -Paul
